@@ -1,20 +1,54 @@
-# Google TMT Translator Extension - User Guide
+# Google TMT Translator Extension
 
-Welcome to the Google TMT Translator Extension. This guide will walk you through everything you need to know to use this browser extension for translating web pages in real-time.
+A real-time web page translation browser extension for the Google TMT Hackathon 2026. Translate web content instantly using the Google Trilingual Machine Translation API.
 
 ## Overview
 
-The Google TMT Translator Extension is a Chrome browser tool that allows you to translate web page content instantly between English, Nepali, and Tamang languages. Instead of manually copying and pasting text into a translation service, this extension translates the content right on the page you're viewing.
+The Google TMT Translator Extension is a Chrome browser tool that allows you to translate web page content instantly between English, Nepali, and Tamang languages. The extension features a clean, minimal interface that makes translation simple and straightforward.
 
-## System Requirements
+**For detailed user instructions, see [USER_GUIDE.md](USER_GUIDE.md)**
 
-The extension requires the following to run properly:
+## Features
 
-- Google Chrome or Chromium-based browser (version 88 or higher)
-- Internet connection for API access
-- API key from the Google TMT Hackathon registration
-- Minimum 2GB RAM available in your system
-- Modern processor (Intel Core i5 or equivalent)
+- Real-time translation of visible web page content
+- Support for three languages: English, Nepali, and Tamang
+- Bidirectional translation for all supported language pairs
+- Smart caching to reduce API calls
+- Simple, intuitive popup interface
+- One-click reset to restore original content
+- Progress tracking during translation
+
+## Supported Language Pairs
+
+- English ↔ Nepali
+- English ↔ Tamang
+- Nepali ↔ Tamang
+
+## Quick Start
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked" and select this folder
+4. Add your API key to `src/scripts/config.js`
+5. Click the extension icon and select your languages
+6. Click "Translate" to begin
+- One-click reset to restore original content
+- Progress tracking during translation
+
+## Supported Language Pairs
+
+- English ↔ Nepali
+- English ↔ Tamang
+- Nepali ↔ Tamang
+
+## Quick Start
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked" and select this folder
+4. Add your API key to `src/scripts/config.js`
+5. Click the extension icon and select your languages
+6. Click "Translate" to begin
 
 ## Getting Started
 
