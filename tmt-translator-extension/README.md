@@ -32,189 +32,123 @@ The Google TMT Translator Extension is a Chrome browser tool that allows you to 
 4. Add your API key to `src/scripts/config.js`
 5. Click the extension icon and select your languages
 6. Click "Translate" to begin
-- One-click reset to restore original content
-- Progress tracking during translation
-
-## Supported Language Pairs
-
-- English ↔ Nepali
-- English ↔ Tamang
-- Nepali ↔ Tamang
-
-## Quick Start
-
-1. Open `chrome://extensions/` in Chrome
-2. Enable "Developer mode" (top right)
-3. Click "Load unpacked" and select this folder
-4. Add your API key to `src/scripts/config.js`
-5. Click the extension icon and select your languages
-6. Click "Translate" to begin
 
 ## Getting Started
 
-### Step 1: Installation
+### Installation
 
-1. Open your Chrome browser
-2. Go to the extension settings page by typing `chrome://extensions/` in the address bar
-3. Enable "Developer mode" using the toggle button in the top right corner
-4. Click the "Load unpacked" button
-5. Navigate to the tmt-translator-extension folder and select it
-6. The extension will now appear in your Chrome toolbar
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" (top right toggle)
+3. Click "Load unpacked" and select this folder
+4. Add your API key to `src/scripts/config.js` (line 10)
+5. Refresh the extension in the extensions page
+6. Click the extension icon on any website to start translating
 
-### Step 2: Add Your API Key
+### Configuration
 
-The extension needs an API key to communicate with the translation service. This key is provided during hackathon registration.
+Edit `src/scripts/config.js` to customize:
+- API_KEY: Your TMT API credentials
+- MAX_ELEMENTS_PER_BATCH: Number of elements processed at once (default: 50)
+- DELAY_BETWEEN_CALLS: Wait time between API calls (default: 1000ms)
+- CACHE_EXPIRY: How long to cache translations (default: 60 minutes)
+- SELECTORS_TO_TRANSLATE: Which HTML elements to translate
+- SELECTORS_TO_SKIP: Which elements to skip
 
-1. Open the file `src/scripts/config.js` in a text editor
-2. Find this line in the file:
-   ```
-   API_KEY: 'team_xxxxxxxxxxxxxxxx',
-   ```
-3. Replace the placeholder with your actual API key
-4. Save the file
-5. Go back to the extensions page and click the refresh icon on the translator extension
+After changes, refresh the extension from the extensions page.
 
-### Step 3: Test the Extension
+## Project Structure
 
-Once installed and configured, test the extension with these steps:
+```
+tmt-translator-extension/
+├── manifest.json                 # Extension configuration
+├── README.md                     # This file
+├── USER_GUIDE.md                 # Detailed user instructions
+│
+├── src/
+│   ├── scripts/
+│   │   ├── config.js            # Configuration & constants
+│   │   ├── translation-service.js # API communication & retry logic
+│   │   ├── background.js        # Service worker (message router)
+│   │   └── content-script.js    # Page translator (DOM manipulation)
+│   │
+│   ├── popup/
+│   │   ├── popup.html           # Extension popup UI
+│   │   └── popup.js             # Popup controller
+│   │
+│   ├── styles/
+│   │   └── popup.css            # Popup styling
+│   │
+│   └── assets/
+│       └── icon-*.png           # Extension icons (16x16, 48x48, 128x128)
+```
 
-1. Visit any website with text content (for example, www.example.com)
-2. Click the extension icon in your Chrome toolbar
-3. A popup window will appear with translation options
-4. The default settings show "English to Nepali" translation
-5. Click the "Translate" button to start translating the page
-6. Watch as the text on the webpage gets translated
+## Technical Architecture
 
-## How to Use
+The extension uses a client-server architecture with message passing:
 
-### Basic Translation
+**Components:**
+- **Content Script** (content-script.js): Runs on every webpage, identifies translatable elements, updates DOM
+- **Service Worker** (background.js): Central message hub routing between popup and content script
+- **Translation Service** (translation-service.js): Handles API calls with retry logic and caching
+- **Popup UI** (popup.js): User interface for controlling translations
 
-1. Navigate to any website you want to translate
-2. Click the extension icon in your toolbar
-3. The popup will show:
-   - A "From" language selector (source language)
-   - A "To" language selector (target language)
-   - A swap button (arrow icon) to switch the source and target languages
-   - A progress bar that shows translation status
-   - Translate and Reset buttons
+**Communication Flow:**
+```
+Popup UI → Service Worker → Content Script → Translation Service → Google TMT API
+                                       ↓
+                            (Updates visible text on page)
+```
 
-### Changing Languages
+## Recent Improvements (v1.0.0)
 
-The extension supports these language combinations:
+- Fixed English to Tamang translation error by improving language code validation
+- Simplified UI to minimal design (Translate and Reset buttons)
+- Enhanced retry logic with support for alternative Tamang language codes (tmg, tam, tag, tg)
+- Added parameter validation before API calls
+- Improved error messages for better debugging
 
-- English to Nepali (and vice versa)
-- English to Tamang (and vice versa)
-- Nepali to Tamang (and vice versa)
+## Known Limitations
 
-To change languages:
-
-1. Click on the "From" dropdown to select the source language
-2. Click on the "To" dropdown to select the target language
-3. If you want to swap the source and target languages, click the arrow button between them
-4. Click "Translate" to start the translation
-
-### What Gets Translated
-
-The extension translates most visible text on a webpage, including:
-
-- Paragraph text
-- Headings and subheadings
-- Links
-- Button labels
-- List items
-- Table cells
-- Span elements
-
-The extension does NOT translate:
-
-- Text in images or graphics
-- Code or script content
-- Text inside style elements
-- Content marked as "no-translate"
-- Certain embedded media
-
-### Resetting the Page
-
-If you want to go back to the original content:
-
-1. Click the extension icon
-2. Click the "Reset" button
-3. The page will return to its original language immediately
-
-### Understanding the Progress Bar
-
-While translation is happening, a blue progress bar appears in the popup. This shows that the extension is actively translating content on the page. Once the bar completes, all visible translations are done.
-
-## Configuration Options
-
-For users who want to customize how the extension works, the configuration file located at `src/scripts/config.js` contains these adjustable settings:
-
-- MAX_ELEMENTS_PER_BATCH: Controls how many page elements are processed at one time
-- DELAY_BETWEEN_CALLS: The wait time between API requests (in milliseconds)
-- CACHE_EXPIRY: How long translated content is stored before requiring new translation (in minutes)
-- SELECTORS_TO_TRANSLATE: Which HTML elements should be translated
-- SELECTORS_TO_SKIP: Which elements should not be translated
-
-After changing any configuration, refresh the extension from the extensions page.
-
-## Technical Details
-
-The extension operates on a client-server architecture with these components:
-
-1. Content Script: Runs on every webpage and identifies translatable text elements
-2. Service Worker: Manages communication between the popup and content script
-3. Translation Service: Handles API requests to the Google TMT backend
-4. Popup Interface: Provides the user interface for controlling translations
-
-The extension uses Chrome's Message Passing API for communication between components. Translation requests are sent to the Google TMT API endpoint at tmt.ilprl.ku.edu.np/lang-translate.
-
-## Performance Considerations
-
-The extension works most efficiently when:
-
-- Processing pages with moderate amounts of text
-- Waiting for the progress bar to complete before navigating away
-- Keeping the browser window focused on the translating page
-- Using a stable internet connection with good bandwidth
-
-Large pages with thousands of elements may take several seconds to translate completely. The extension processes elements in batches to avoid overwhelming the system.
+- Does not translate text within images or graphics
+- Does not translate code blocks or script content
+- Requires stable internet connection
+- Very large pages may take time to process
+- Some special characters may not translate correctly
+- Not compatible with restricted pages (chrome://, about:, etc.)
 
 ## Troubleshooting
 
-### Extension Does Not Appear in Toolbar
+**See [USER_GUIDE.md](USER_GUIDE.md) for detailed troubleshooting steps**
 
-If you don't see the extension icon:
+Quick fixes:
+- API Error: Verify API key in config.js
+- Nothing translating: Try refreshing the page
+- Slow translation: Close other tabs and try a simpler page
+- Extension not visible: Click Extensions menu → pin the extension
 
-1. Click the Extensions menu icon in Chrome (top right)
-2. Find "Google TMT Translator"
-3. Click the pin icon next to it to add it to your main toolbar
+## API Information
 
-### Getting "Translation Error" Messages
+- **Endpoint:** https://tmt.ilprl.ku.edu.np/lang-translate
+- **Authentication:** Bearer token via API_KEY
+- **Rate Limiting:** Implements exponential backoff (max 10 seconds)
+- **Retry Strategy:** Up to 2 retries for most errors, alternative codes for Tamang
+- **Caching:** Local browser storage with 60-minute expiry
 
-If you see error messages during translation:
+## Browser Support
 
-1. Check that your API key is correctly configured in config.js
-2. Verify that your internet connection is working
-3. Try reloading the page before translating again
-4. If the error persists, refresh the extension from the extensions page
+- Chrome 88+
+- Chromium-based browsers (Edge, Brave, etc.)
 
-### Some Text Not Translating
+## Version
 
-If certain text on the page is not translating:
+Current: 1.0.0
+Manifest Version: 3
 
-1. The text might be inside an image or graphic (these cannot be translated)
-2. The text might be in a code block or script (intentionally skipped)
-3. Try zooming in to see if smaller elements are translated
-4. Clear the cache and try again
+## Support
 
-### Translation Takes Too Long
+For detailed usage instructions, see [USER_GUIDE.md](USER_GUIDE.md)
 
-If translation is slow:
-
-1. Check your internet connection speed
-2. Close other browser tabs to free up system resources
-3. Try translating a simpler page first
-4. Refresh the extension and try again
+For technical details and debugging, check browser console (F12 → Console tab)
 
 ### Cannot Establish Connection Error
 
