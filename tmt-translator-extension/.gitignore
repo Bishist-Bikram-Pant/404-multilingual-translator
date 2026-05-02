@@ -1,0 +1,64 @@
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Build outputs
+dist/
+build/
+out/
+
+# Testing
+coverage/
+*.lcov
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
+
+# OS files
+.DS_Store
+.gitkeep
+
+# API Keys (IMPORTANT - DO NOT COMMIT)
+# Never commit actual API keys
+config.local.js
+src/scripts/config.local.js
+
+# Chrome extension specific
+chrome-extension-key.pem
+*.crx
+
+# VS Code settings (personal)
+.vscode/settings.json
+.vscode/launch.json
+
+# Exclude large files
+*.zip
+*.tar.gz
+
+# Exclude demo/test recordings
+demos/
+*.mp4
+*.webm

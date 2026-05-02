@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google TMT Translator</title>
+    <link rel="stylesheet" href="../styles/popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🌐 TMT Translator</h1>
+            <p class="subtitle">Real-time page translation</p>
+        </div>
+
+        <!-- Status Section -->
+        <div class="status-section">
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot"></span>
+                <span id="statusText">Ready</span>
+            </div>
+        </div>
+
+        <!-- Language Selection -->
+        <div class="language-section">
+            <div class="language-pair">
+                <label class="label">From:</label>
+                <select id="sourceLang" class="select">
+                    <option value="en">English (English)</option>
+                    <option value="ne">नेपाली (Nepali)</option>
+                    <option value="tmg">तामाङ (Tamang)</option>
+                </select>
+            </div>
+
+            <div class="swap-button-container">
+                <button id="swapLangs" class="swap-button" title="Swap languages">
+                    ⇄
+                </button>
+            </div>
+
+            <div class="language-pair">
+                <label class="label">To:</label>
+                <select id="targetLang" class="select">
+                    <option value="en">English (English)</option>
+                    <option value="ne" selected>नेपाली (Nepali)</option>
+                    <option value="tmg">तामाङ (Tamang)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="button-section">
+            <button id="translateBtn" class="button button-primary" title="Start translation">
+                🚀 Translate Page
+            </button>
+            <button id="resetBtn" class="button button-secondary" title="Reset to original">
+                ↺ Reset
+            </button>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Translating...</p>
+        </div>
+
+        <!-- Statistics Section -->
+        <div class="stats-section">
+            <div class="stat-item">
+                <span class="stat-label">Elements:</span>
+                <span class="stat-value" id="elementCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Cache:</span>
+                <span class="stat-value" id="cacheSize">0</span>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <details class="settings-section">
+            <summary>⚙️ Settings</summary>
+            <div class="settings-content">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableCache" checked>
+                    <span>Enable caching</span>
+                </label>
+                <button id="clearCacheBtn" class="button button-tertiary">
+                    Clear Cache
+                </button>
+            </div>
+        </details>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <p class="info-text">
+                Supported pairs: EN ↔ NE, EN ↔ TMG, NE ↔ TMG
+            </p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" style="display: none;"></div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage" style="display: none;"></div>
+    </div>
+
+    <!-- Load config first as global script -->
+    <script src="../scripts/config.js"></script>
+    <!-- Then load popup controller -->
+    <script src="popup.js"></script>
+</body>
+</html>
