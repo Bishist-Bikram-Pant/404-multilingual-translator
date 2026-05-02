@@ -146,8 +146,6 @@ Manifest Version: 3
 
 ## Support
 
-For detailed usage instructions, see [USER_GUIDE.md](USER_GUIDE.md)
-
 For technical details and debugging, check browser console (F12 → Console tab)
 
 ### Cannot Establish Connection Error
