@@ -45,16 +45,29 @@ The Google TMT Translator Extension is a Chrome browser tool that allows you to 
 
 ### Step 2: Add Your API Key
 
-The extension needs an API key to communicate with the translation service.
+The extension securely stores your API key in Chrome's local storage. Follow these steps:
 
-1. Open the file `src/scripts/config.js` in a text editor
-2. Find this line:
+1. Click the extension icon in your Chrome toolbar to open the popup
+2. Right-click anywhere in the popup window and select **"Inspect"** (or press `Cmd+Option+I` on Mac, `Ctrl+Shift+I` on Windows)
+3. This opens DevTools — click the **"Console"** tab
+4. In the console, type the following command and press Enter:
    ```javascript
-   API_KEY: 'team_xxxxxxxxxxxxxxxx',
+   setAPIKey('your-actual-api-key-here')
    ```
-3. Replace the placeholder with your actual API key
-4. Save the file
-5. Go back to the extensions page and click the refresh icon on the translator extension
+   Replace `your-actual-api-key-here` with your actual API key from the hackathon registration.
+   
+   Example:
+   ```javascript
+   setAPIKey('hackathon-key-abc123xyz')
+   ```
+5. You should see `API key saved to storage` in the console. The key is now safely stored.
+
+**To verify the key is set:**
+```javascript
+getAPIKey()
+```
+
+**Note:** Your API key is stored securely in `chrome.storage.local` and persists across browser sessions. You only need to set it once.
 
 ### Step 3: Test the Extension
 

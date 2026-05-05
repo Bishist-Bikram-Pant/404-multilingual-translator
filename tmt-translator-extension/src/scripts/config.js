@@ -4,12 +4,13 @@
  */
 
 // Define CONFIG globally (not as ES6 export for service worker compatibility)
+
 const CONFIG = {
   // API Configuration
   API: {
     BASE_URL: 'https://tmt.ilprl.ku.edu.np/lang-translate',
-    // TODO: Replace with your actual API key from hackathon registration
-    API_KEY: 'team_38272f40488364f6',
+    // API key will be loaded from chrome.storage at runtime
+    API_KEY: null,
     REQUEST_TIMEOUT: 10000, // 10 seconds
     RETRY_ATTEMPTS: 2,
     RETRY_DELAY: 1000 // milliseconds
@@ -82,3 +83,42 @@ const CONFIG = {
 // CONFIG is now globally available for all scripts
 // Service workers access it via importScripts('./config.js')
 // Popup accesses it as a global variable
+
+/**
+ * Initialize API key from chrome.storage
+ * Call this in background.js and popup.js at startup
+ */
+async function initializeAPIKey() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get('tmt_api_key', (result) => {
+      if (result.tmt_api_key) {
+        CONFIG.API.API_KEY = result.tmt_api_key;
+        console.log('API key loaded from storage');
+      } else {
+        console.warn('API key not found in storage. Please set it in extension options.');
+      }
+      resolve(CONFIG.API.API_KEY);
+    });
+  });
+}
+
+/**
+ * Set API key in chrome.storage
+ * @param {string} apiKey - The API key to store
+ */
+async function setAPIKey(apiKey) {
+  return new Promise((resolve) => {
+    chrome.storage.local.set({ tmt_api_key: apiKey }, () => {
+      CONFIG.API.API_KEY = apiKey;
+      console.log('API key saved to storage');
+      resolve(true);
+    });
+  });
+}
+
+/**
+ * Get current API key
+ */
+function getAPIKey() {
+  return CONFIG.API.API_KEY;
+}

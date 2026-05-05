@@ -15,6 +15,14 @@ try {
   console.error('[Background] Failed to load dependencies:', error);
 }
 
+// Initialize API key from chrome.storage
+initializeAPIKey().then(() => {
+  console.log('[Background] API key initialized');
+  if (!CONFIG.API.API_KEY) {
+    console.warn('[Background] API key not set. Please configure it in the extension settings.');
+  }
+});
+
 // Store active translation state per tab
 const translationState = new Map();
 
